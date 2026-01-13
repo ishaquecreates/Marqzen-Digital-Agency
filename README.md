@@ -52,7 +52,6 @@ Every project is built with attention to detail, usability, and business goals.
 
 ## Project Structure
 
-![alt text](https://cdn.corenexis.com/view/1932411168 "image")
 
 Marqzen-Digital-Agency <br>
 
