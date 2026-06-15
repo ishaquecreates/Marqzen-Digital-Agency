@@ -2296,6 +2296,15 @@ partners
   width: 100%;
 }
 
+.partner-logo {
+   
+    /* filter: grayscale(100%) contrast(120%); */
+    transition: all 0.3s ease;
+}
+
+.mil-partner-frame:hover .partner-logo {
+    filter: none;
+}
 /* -------------------------------------------
 
 services
