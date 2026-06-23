@@ -1050,3 +1050,13 @@ $(function () {
     });
 
 });
+
+const video = document.querySelector('.autoplay-video');
+
+document.addEventListener('click', function enableAudio() {
+    video.muted = false;
+    video.volume = 0.3;
+    video.play();
+
+    document.removeEventListener('click', enableAudio);
+});
