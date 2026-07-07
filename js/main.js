@@ -81,6 +81,201 @@ $(function () {
 
     /***************************
 
+    mobile partner logo popup
+
+    ***************************/
+    var partnerPopupInitialized = false;
+    var activePartnerFrame = null;
+    var pausedPartnerSwiper = null;
+    var partnerSwiperWasRunning = false;
+
+    function usesMobilePartnerPopup() {
+        return window.matchMedia(
+            "(max-width: 767px), (hover: none) and (pointer: coarse)"
+        ).matches;
+    }
+
+    function pausePartnerSlider(frame) {
+        var sliderElement = frame.closest(".mil-partner-slider");
+        var swiper = sliderElement && sliderElement.swiper;
+
+        pausedPartnerSwiper = null;
+        partnerSwiperWasRunning = false;
+
+        if (
+            swiper &&
+            swiper.autoplay &&
+            typeof swiper.autoplay.stop === "function"
+        ) {
+            partnerSwiperWasRunning = Boolean(swiper.autoplay.running);
+            swiper.autoplay.stop();
+            pausedPartnerSwiper = swiper;
+        }
+    }
+
+    function resumePartnerSlider() {
+        if (
+            pausedPartnerSwiper &&
+            partnerSwiperWasRunning &&
+            pausedPartnerSwiper.autoplay &&
+            typeof pausedPartnerSwiper.autoplay.start === "function"
+        ) {
+            pausedPartnerSwiper.autoplay.start();
+        }
+
+        pausedPartnerSwiper = null;
+        partnerSwiperWasRunning = false;
+    }
+
+    function closePartnerLogoPopup(restoreFocus) {
+        var overlay = document.getElementById("partnerMobilePopup");
+
+        if (!overlay) {
+            return;
+        }
+
+        overlay.classList.remove("is-open");
+        overlay.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("partner-popup-open");
+
+        if (activePartnerFrame) {
+            activePartnerFrame.classList.remove("is-open");
+            activePartnerFrame.setAttribute("aria-expanded", "false");
+
+            if (restoreFocus && document.body.contains(activePartnerFrame)) {
+                activePartnerFrame.focus({
+                    preventScroll: true
+                });
+            }
+        }
+
+        var popupImage = overlay.querySelector(".partner-mobile-image");
+
+        if (popupImage) {
+            popupImage.removeAttribute("src");
+            popupImage.alt = "";
+        }
+
+        activePartnerFrame = null;
+        resumePartnerSlider();
+    }
+
+    function openPartnerLogoPopup(frame) {
+        var overlay = document.getElementById("partnerMobilePopup");
+
+        if (!overlay || !usesMobilePartnerPopup()) {
+            return;
+        }
+
+        var sourceImage =
+            frame.querySelector(".partner-logo-popup img") ||
+            frame.querySelector(".partner-logo");
+
+        var popupImage = overlay.querySelector(".partner-mobile-image");
+        var dialog = overlay.querySelector(".partner-mobile-dialog");
+
+        if (!sourceImage || !popupImage || !dialog) {
+            return;
+        }
+
+        closePartnerLogoPopup(false);
+
+        activePartnerFrame = frame;
+        activePartnerFrame.classList.add("is-open");
+        activePartnerFrame.setAttribute("aria-expanded", "true");
+
+        popupImage.src = sourceImage.currentSrc || sourceImage.src;
+        popupImage.alt =
+            frame.querySelector(".partner-logo").alt || "Partner logo";
+
+        var logoZoom = window
+            .getComputedStyle(frame)
+            .getPropertyValue("--logo-zoom")
+            .trim();
+
+        dialog.style.setProperty(
+            "--mobile-logo-zoom",
+            logoZoom || "1"
+        );
+
+        overlay.classList.add("is-open");
+        overlay.setAttribute("aria-hidden", "false");
+        document.body.classList.add("partner-popup-open");
+
+        pausePartnerSlider(frame);
+
+        var closeButton = overlay.querySelector(".partner-mobile-close");
+
+        if (closeButton) {
+            closeButton.focus({
+                preventScroll: true
+            });
+        }
+    }
+
+    function initPartnerLogoPopup() {
+        if (partnerPopupInitialized) {
+            return;
+        }
+
+        partnerPopupInitialized = true;
+
+        document.addEventListener("click", function (event) {
+            var partnerFrame = event.target.closest(".mil-partner-frame");
+            var overlay = document.getElementById("partnerMobilePopup");
+
+            if (partnerFrame) {
+                if (!usesMobilePartnerPopup()) {
+                    return;
+                }
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                /*
+                  Swiper sets allowClick to false after a drag. This prevents
+                  a horizontal swipe from accidentally opening a logo.
+                */
+                var sliderElement =
+                    partnerFrame.closest(".mil-partner-slider");
+                var swiper = sliderElement && sliderElement.swiper;
+
+                if (swiper && swiper.allowClick === false) {
+                    return;
+                }
+
+                openPartnerLogoPopup(partnerFrame);
+                return;
+            }
+
+            if (!overlay || !overlay.classList.contains("is-open")) {
+                return;
+            }
+
+            if (
+                event.target === overlay ||
+                event.target.closest(".partner-mobile-close")
+            ) {
+                closePartnerLogoPopup(true);
+            }
+        });
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                closePartnerLogoPopup(true);
+            }
+        });
+
+        window.addEventListener("resize", function () {
+            if (!usesMobilePartnerPopup()) {
+                closePartnerLogoPopup(false);
+            }
+        });
+    }
+
+
+    /***************************
+
     preloader
     
     ***************************/
@@ -561,6 +756,7 @@ $(function () {
 
     ***************************/
     initPartnerLogoSlider();
+    initPartnerLogoPopup();
 
     /***************************
 
@@ -636,6 +832,8 @@ $(function () {
     ------------------------------------------------------------
     ----------------------------------------------------------*/
     document.addEventListener("swup:contentReplaced", function () {
+
+        closePartnerLogoPopup(false);
 
         $('html, body').animate({
             scrollTop: 0,
@@ -987,6 +1185,7 @@ $(function () {
 
         ***************************/
         initPartnerLogoSlider();
+        initPartnerLogoPopup();
         /***************************
 
         1 item slider

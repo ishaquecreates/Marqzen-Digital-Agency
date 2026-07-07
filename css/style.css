@@ -2284,14 +2284,18 @@ about
 partners
 
 ------------------------------------------- */
+
+.mil-partner-slider,
+.mil-partner-slider .swiper-wrapper,
+.mil-partner-slider .swiper-slide {
+  overflow: visible !important;
+}
+
 .mil-partner-slider .swiper-wrapper {
-  -webkit-transition-timing-function: linear !important;
-          transition-timing-function: linear !important;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
 }
-
 
 .mil-partner-slider .swiper-slide {
   width: -webkit-max-content !important;
@@ -2300,6 +2304,7 @@ partners
   -webkit-box-flex: 0;
       -ms-flex: 0 0 auto;
           flex: 0 0 auto;
+
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -2311,54 +2316,317 @@ partners
           align-items: center;
 }
 
-.mil-infinite-show .swiper-slide {
-    width: auto !important;
-    flex-shrink: 0;
-
-    display: flex;
-    align-items: center;
-}
-
 .mil-partner-frame {
-    width: auto;
-    height: 100px;
+  /*
+    Increase this only for an individual source image that contains
+    excessive blank space inside its SVG or PNG canvas.
+  */
+  --logo-zoom: 1;
 
-    display: inline-flex;
-    align-items: center;
+  width: 220px;
+  height: 120px;
+  padding: 10px;
 
-    /* No visible box */
-    background: transparent;
-    border: none;
-    padding: 0;
-    margin: 0;
+  position: relative;
+  z-index: 1;
+  overflow: visible;
+
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+
+  background: transparent;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: none;
+
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .partner-logo {
-    display: block;
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 200px;
+  max-height: 90px;
+  -o-object-fit: contain;
+     object-fit: contain;
 
-    width: auto;
-    height: 55px;
-
-    max-width: 180px;
-    object-fit: contain;
-
-    transition: 0.3s;
+  -webkit-transition: opacity 0.25s ease, -webkit-transform 0.25s ease;
+  transition: opacity 0.25s ease, -webkit-transform 0.25s ease;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  transition: transform 0.25s ease, opacity 0.25s ease,
+              -webkit-transform 0.25s ease;
 }
-.mil-partner-frame:hover .partner-logo {
-  -webkit-filter: none;
-          filter: none;
+
+/* Desktop popup attached to the hovered logo. */
+.partner-logo-popup {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+
+  width: min(360px, 72vw);
+  height: 210px;
+  padding: 14px;
+
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 16px;
+  -webkit-box-shadow: 0 14px 36px rgba(0, 0, 0, 0.20);
+          box-shadow: 0 14px 36px rgba(0, 0, 0, 0.20);
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  -webkit-transform: translate(-50%, -50%) scale(0.88);
+          transform: translate(-50%, -50%) scale(0.88);
+  -webkit-transform-origin: center;
+          transform-origin: center;
+
+  -webkit-transition:
+    opacity 0.22s ease,
+    visibility 0.22s ease,
+    -webkit-transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition:
+    opacity 0.22s ease,
+    visibility 0.22s ease,
+    transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  z-index: 1000;
 }
 
-@media screen and (max-width: 576px) {
+.partner-logo-popup img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+
+  -webkit-transform: scale(var(--logo-zoom));
+          transform: scale(var(--logo-zoom));
+  -webkit-transform-origin: center;
+          transform-origin: center;
+}
+
+/*
+  Hover popup is enabled only on devices with a real mouse/trackpad.
+  Mobile does not use :active or :focus, which prevents temporary,
+  random-looking opening and closing.
+*/
+@media (hover: hover) and (pointer: fine) {
+  .mil-partner-frame:hover,
+  .mil-partner-frame:focus-visible {
+    z-index: 1001;
+  }
+
+  .mil-partner-frame:hover > .partner-logo,
+  .mil-partner-frame:focus-visible > .partner-logo {
+    opacity: 0.18;
+    -webkit-transform: scale(1.04);
+            transform: scale(1.04);
+  }
+
+  .mil-partner-frame:hover .partner-logo-popup,
+  .mil-partner-frame:focus-visible .partner-logo-popup {
+    opacity: 1;
+    visibility: visible;
+    -webkit-transform: translate(-50%, -50%) scale(1);
+            transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Mobile partner sizing. */
+@media screen and (max-width: 767px) {
   .mil-partner-frame {
-    height: 72px;
+    width: 160px;
+    height: 100px;
+    padding: 8px;
   }
 
   .partner-logo {
-    max-width: 120px;
-    max-height: 44px;
+    max-width: 145px;
+    max-height: 80px;
+  }
+
+  /* The mobile popup is body-level, so hide the inline hover popup. */
+  .partner-logo-popup {
+    display: none !important;
   }
 }
+
+/* Body-level mobile popup: opens on tap and remains open. */
+.partner-mobile-overlay {
+  display: none;
+}
+
+@media screen and (max-width: 767px), (hover: none) and (pointer: coarse) {
+  body.partner-popup-open {
+    overflow: hidden;
+  }
+
+  .partner-mobile-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10050;
+
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.22);
+    -webkit-backdrop-filter: blur(3px);
+            backdrop-filter: blur(3px);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    -webkit-transition: opacity 0.22s ease, visibility 0.22s ease;
+    transition: opacity 0.22s ease, visibility 0.22s ease;
+  }
+
+  .partner-mobile-overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .partner-mobile-dialog {
+    --mobile-logo-zoom: 1;
+
+    position: relative;
+    width: min(280px, calc(100vw - 32px));
+    height: 170px;
+    padding: 16px;
+
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    border-radius: 14px;
+    -webkit-box-shadow: 0 16px 40px rgba(0, 0, 0, 0.24);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.24);
+
+    -webkit-transform: scale(0.88);
+            transform: scale(0.88);
+    -webkit-transition: -webkit-transform 0.26s
+      cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition: transform 0.26s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .partner-mobile-overlay.is-open .partner-mobile-dialog {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+
+  .partner-mobile-image {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    -o-object-fit: contain;
+       object-fit: contain;
+
+    -webkit-transform: scale(var(--mobile-logo-zoom));
+            transform: scale(var(--mobile-logo-zoom));
+    -webkit-transform-origin: center;
+            transform-origin: center;
+  }
+
+  .partner-mobile-close {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    z-index: 2;
+
+    width: 30px;
+    height: 30px;
+    padding: 0;
+
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+
+    border: 0;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.08);
+    color: #111111;
+    font-family: Arial, sans-serif;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .partner-mobile-close:focus-visible {
+    outline: 2px solid #111111;
+    outline-offset: 2px;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .partner-mobile-dialog {
+    width: min(250px, calc(100vw - 24px));
+    height: 150px;
+    padding: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .partner-logo,
+  .partner-logo-popup,
+  .partner-mobile-overlay,
+  .partner-mobile-dialog {
+    -webkit-transition: none;
+    transition: none;
+  }
+}
+
+
 /* -------------------------------------------
 
 services
