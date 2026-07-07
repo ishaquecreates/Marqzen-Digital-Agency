@@ -42,6 +42,43 @@ $(function () {
     var dark = '#000';
     var light = '#fff';
 
+
+    /***************************
+
+    partner logos slider
+
+    ***************************/
+    function initPartnerLogoSlider() {
+        document.querySelectorAll('.mil-partner-slider').forEach(function (sliderElement) {
+            
+            if (sliderElement.swiper) {
+                sliderElement.swiper.destroy(true, true);
+            }
+
+            new Swiper(sliderElement, {
+                // The slide width comes from the actual rendered logo width.
+                slidesPerView: 10,
+
+                // This is the exact visible gap between every pair of logos
+                // on desktop, tablet, and mobile.
+                spaceBetween: 36,
+
+                speed: 3000,
+                loop: true,
+                loopAdditionalSlides: 5,
+                freeMode: true,
+                freeModeMomentum: false,
+                allowTouchMove: true,
+                observer: true,
+                observeParents: true,
+                autoplay: {
+                    delay: 0,
+                    disableOnInteraction: false,
+                },
+            });
+        });
+    }
+
     /***************************
 
     preloader
@@ -523,22 +560,7 @@ $(function () {
     infinite slider
 
     ***************************/
-    var swiper = new Swiper('.mil-infinite-show', {
-        slidesPerView: 2,
-        spaceBetween: 30,
-        speed: 5000,
-        autoplay: true,
-        autoplay: {
-            delay: 0,
-        },
-        loop: true,
-        freeMode: true,
-        breakpoints: {
-            992: {
-                slidesPerView: 4,
-            },
-        },
-    });
+    initPartnerLogoSlider();
 
     /***************************
 
@@ -964,45 +986,7 @@ $(function () {
         infinite slider
 
         ***************************/
-        var swiper = new Swiper('.mil-infinite-show', {
-            slidesPerView: 2,
-            spaceBetween: 30,
-            speed: 5000,
-            autoplay: true,
-            autoplay: {
-                delay: 0,
-            },
-            loop: true,
-            freeMode: true,
-            breakpoints: {
-                992: {
-                    slidesPerView: 4,
-                },
-            },
-        });
-
-        /***************************
-
-        portfolio slider
-
-        ***************************/
-        var swiper = new Swiper('.mil-portfolio-slider', {
-            slidesPerView: 1,
-            spaceBetween: 0,
-            speed: 800,
-            parallax: true,
-            mousewheel: {
-                enable: true
-            },
-            navigation: {
-                nextEl: '.mil-portfolio-next',
-                prevEl: '.mil-portfolio-prev',
-            },
-            pagination: {
-                el: '.swiper-portfolio-pagination',
-                type: 'fraction',
-            },
-        });
+        initPartnerLogoSlider();
         /***************************
 
         1 item slider

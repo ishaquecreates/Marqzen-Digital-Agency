@@ -2284,26 +2284,80 @@ about
 partners
 
 ------------------------------------------- */
-.mil-infinite-show .swiper-wrapper {
-  -webkit-transition-timing-function: linear;
-          transition-timing-function: linear;
+.mil-partner-slider .swiper-wrapper {
+  -webkit-transition-timing-function: linear !important;
+          transition-timing-function: linear !important;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+
+.mil-partner-slider .swiper-slide {
+  width: -webkit-max-content !important;
+  width: -moz-max-content !important;
+  width: max-content !important;
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 auto;
+          flex: 0 0 auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.mil-infinite-show .swiper-slide {
+    width: auto !important;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
 }
 
 .mil-partner-frame {
-  display: block;
-}
-.mil-partner-frame img {
-  width: 200%;
+    width: auto;
+    height: 100px;
+
+    display: inline-flex;
+    align-items: center;
+
+    /* No visible box */
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
 }
 
 .partner-logo {
-   
-    /* filter: grayscale(100%) contrast(120%); */
-    transition: all 0.3s ease;
+    display: block;
+
+    width: auto;
+    height: 55px;
+
+    max-width: 180px;
+    object-fit: contain;
+
+    transition: 0.3s;
+}
+.mil-partner-frame:hover .partner-logo {
+  -webkit-filter: none;
+          filter: none;
 }
 
-.mil-partner-frame:hover .partner-logo {
-    filter: none;
+@media screen and (max-width: 576px) {
+  .mil-partner-frame {
+    height: 72px;
+  }
+
+  .partner-logo {
+    max-width: 120px;
+    max-height: 44px;
+  }
 }
 /* -------------------------------------------
 
