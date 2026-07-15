@@ -1234,12 +1234,41 @@ $(function () {
 
 });
 
-const video = document.querySelector('.autoplay-video');
+const video = document.getElementById("heroVideo");
+const playPauseIcon = document.getElementById("playPauseIcon");
+const soundIcon = document.getElementById("soundIcon");
 
-document.addEventListener('click', function enableAudio() {
-    video.muted = false;
-    video.volume = 0.3;
-    video.play();
+// Initially show Play
+playPauseIcon.innerHTML = "▶";
 
-    document.removeEventListener('click', enableAudio);
+video.addEventListener("click", () => {
+
+    if (video.paused) {
+        video.play();
+
+        // Hide play icon while video is playing
+        playPauseIcon.style.opacity = "0";
+
+    } else {
+        video.pause();
+
+        // Show play icon when paused
+        playPauseIcon.innerHTML = "▶";
+        playPauseIcon.style.opacity = "1";
+    }
+
+});
+
+soundIcon.addEventListener("click", (e) => {
+
+    e.stopPropagation(); // Prevents the video click event
+
+    video.muted = !video.muted;
+
+    if(video.muted){
+        soundIcon.innerHTML = "🔇";
+    }else{
+        soundIcon.innerHTML = "🔊";
+    }
+
 });

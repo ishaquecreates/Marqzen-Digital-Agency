@@ -926,7 +926,7 @@ spaces
 }
 
 .mil-p-0-120 {
-  padding-bottom: 0px;
+  padding-bottom: 90px;
 }
 @media screen and (max-width: 992px) {
   .mil-p-0-120 {
@@ -4581,4 +4581,90 @@ html.is-animating .mil-menu-frame {
   opacity: 0;
   -webkit-transition-delay: 0.3s;
           transition-delay: 0.3s;
+}
+
+/***************************
+
+video frame
+
+***************************/
+
+.mil-img-frame{
+    position: relative;
+    overflow: hidden;
+}
+
+.autoplay-video{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.video-controls{
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10;
+}
+
+.video-controls span{
+    background:rgba(0,0,0,.5);
+    border-radius:50%;
+    width:45px;
+    height:45px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.play-pause-btn{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+
+    background: rgba(0,0,0,.5);
+    color: #fff;
+    font-size: 30px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+
+    transition: .3s;
+}
+
+.play-pause-btn:hover{
+    background: rgba(0,0,0,.7);
+}
+
+#playPauseIcon{
+    pointer-events:none;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    background:rgba(0,0,0,.5);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    font-size:40px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+#playPauseIcon.show{
+    opacity:1;
 }
