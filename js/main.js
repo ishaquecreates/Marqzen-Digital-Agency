@@ -48,37 +48,55 @@ $(function () {
     partner logos slider
 
     ***************************/
-    function initPartnerLogoSlider() {
-        document.querySelectorAll('.mil-partner-slider').forEach(function (sliderElement) {
-            
+   function initPartnerLogoSlider() {
+    document
+        .querySelectorAll(".mil-partner-slider")
+        .forEach(function (sliderElement) {
+
+            // Destroy the previous Swiper instance before reinitializing.
             if (sliderElement.swiper) {
                 sliderElement.swiper.destroy(true, true);
             }
 
             new Swiper(sliderElement, {
-                // The slide width comes from the actual rendered logo width.
-                slidesPerView: 10,
+                // Important: allows every logo to use its CSS width.
+                slidesPerView: "auto",
 
-                // This is the exact visible gap between every pair of logos
-                // on desktop, tablet, and mobile.
+                // Equal gap between logos.
                 spaceBetween: 36,
 
+                // Smooth continuous movement.
                 speed: 3000,
+
                 loop: true,
-                loopAdditionalSlides: 5,
-                freeMode: true,
-                freeModeMomentum: false,
+
+                // Adds enough cloned slides for a smoother loop.
+                loopAdditionalSlides: 10,
+
                 allowTouchMove: true,
+
                 observer: true,
                 observeParents: true,
+                observeSlideChildren: true,
+
                 autoplay: {
                     delay: 0,
                     disableOnInteraction: false,
+                    pauseOnMouseEnter: false
                 },
+
+                // Helps Swiper recalculate after images load.
+                on: {
+                    imagesReady: function () {
+                        this.update();
+                    },
+                    resize: function () {
+                        this.update();
+                    }
+                }
             });
         });
-    }
-
+}
     /***************************
 
     mobile partner logo popup
